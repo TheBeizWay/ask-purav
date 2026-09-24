@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ask About Purav</title>
+<style>
+  :root{
+    --ink:#0f172a; --body:#334155; --muted:#64748b; --accent:#0369a1; --accent-ink:#ffffff;
+    --line:#dbe4ee; --soft:#f4f8fb; --surface:#ffffff; --page:#eef2f6;
+    --bubble-user:#0369a1; --bubble-user-text:#ffffff;
+    --bubble-bot:#ffffff; --bubble-bot-text:#1f2937; --bubble-bot-line:#dbe4ee;
+    --chip-bg:#f4f8fb; --chip-line:#dbe4ee; --chip-text:#0369a1;
+    --danger:#b91c1c; --danger-soft:#fef2f2;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--page);color:var(--body);font-family:Inter,"Segoe UI",Arial,sans-serif;
+    padding:28px 16px;line-height:1.5;}
+  .wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:16px;}
+  .card{background:var(--surface);border-radius:14px;box-shadow:0 12px 32px rgba(15,23,42,.08);}
+  header.card{padding:28px 30px;border-top:6px solid var(--ink);}
+  .name{font-size:25px;font-weight:750;color:var(--ink);margin:0;letter-spacing:-.3px;}
+  .credentials{font-weight:350;color:var(--muted);font-size:17px;}
+  .tagline{margin-top:6px;color:var(--accent);font-size:10.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;}
+  .blurb{margin-top:14px;color:var(--body);font-size:14px;}
+  .contact-row{margin-top:14px;display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;}
+  .contact-row a{color:var(--accent);text-decoration:none;font-weight:600;}
+  .verify{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;}
+  .verify span{background:var(--soft);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:5px 12px;font-size:11.5px;font-weight:600;}
+
+  .chatcard{padding:0;display:flex;flex-direction:column;min-height:420px;max-height:70vh;}
+  .chat-head{padding:16px 20px;border-bottom:1px solid var(--line);font-size:12.5px;color:var(--muted);}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;padding:14px 20px 4px;}
+  .chip{background:var(--chip-bg);border:1px solid var(--chip-line);color:var(--chip-text);border-radius:999px;
+    padding:7px 13px;font-size:12.5px;cursor:pointer;font-family:inherit;text-align:left;}
+  .chip:hover{filter:brightness(1.05);}
+  .messages{flex:1;overflow-y:auto;padding:14px 20px;display:flex;flex-direction:column;gap:12px;}
+  .msg{max-width:82%;padding:10px 14px;border-radius:14px;font-size:14px;white-space:pre-wrap;}
+  .msg.user{align-self:flex-end;background:var(--bubble-user);color:var(--bubble-user-text);border-bottom-right-radius:4px;}
+  .msg.bot{align-self:flex-start;background:var(--bubble-bot);color:var(--bubble-bot-text);border:1px solid var(--bubble-bot-line);border-bottom-left-radius:4px;}
+  .msg.bot.thinking{color:var(--muted);font-style:italic;}
+  .msg.error{align-self:flex-start;background:var(--danger-soft);color:var(--danger);border:1px solid var(--danger);}
+  .inputrow{display:flex;gap:8px;padding:14px 16px;border-top:1px solid var(--line);}
+  .inputrow input{flex:1;border:1px solid var(--line);background:var(--soft);color:var(--ink);border-radius:10px;
+    padding:11px 13px;font-size:14px;font-family:inherit;}
+  .inputrow input:focus{outline:2px solid var(--accent);outline-offset:1px;}
+  .inputrow button{background:var(--accent);color:var(--accent-ink);border:none;border-radius:10px;
+    padding:0 18px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;}
+  .inputrow button:disabled{opacity:.5;cursor:not-allowed;}
+  .foot{font-size:11.5px;color:var(--muted);text-align:center;padding:2px 8px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="card">
+    <h1 class="name">PURAV MEHTA <span class="credentials">CA &middot; GAICD</span></h1>
+    <div class="tagline">ICT Portfolio Governance &middot; Investment Assurance &middot; Risk &amp; Performance</div>
+    <p class="blurb">This interactive profile provides additional context about Purav's professional experience, qualifications and governance background for recruiters, hiring managers and selection panels. It only draws on his professional history and won't share anything he keeps private (clearance status, exact compensation, or internal tool names).</p>
+    <div class="verify">
+      <span>Chartered Accountant (CA)</span>
+      <span>GAICD</span>
+      <span>Master of Data Science (in progress)</span>
+    </div>
+    <div class="contact-row">
+      <span>Canberra, ACT</span>
+      <a href="mailto:purav.mehta90@gmail.com">purav.mehta90@gmail.com</a>
+      <a href="https://www.linkedin.com/in/puravmehtaca" target="_blank" rel="noopener">linkedin.com/in/puravmehtaca</a>
+    </div>
+  </header>
+
+  <section class="card chatcard" id="chatcard">
+    <div class="chat-head">Ask anything about Purav's experience, career path or capabilities.</div>
+    <div class="chips" id="chips"></div>
+    <div class="messages" id="messages"></div>
+    <div class="inputrow">
+      <input id="input" type="text" placeholder="Ask a question…" autocomplete="off" />
+      <button id="send">Ask</button>
+    </div>
+  </section>
+  <div class="foot">Answers are generated and may occasionally be imperfect — for anything important, verify directly with Purav.</div>
+</div>
+
+<script>
+// Same-origin Netlify Function — no URL to configure, no CORS to fight.
+const ENDPOINT = "/.netlify/functions/ask-purav";
+
+const chipQuestions = [
+  "What's his current role at DFAT?",
+  "What's his background in AI and automation?",
+  "Why does he combine finance, audit and ICT governance?",
+  "What's his experience with Defence or government environments?",
+  "What are his qualifications?",
+  "Why is he a strong candidate for governance, portfolio or assurance roles?"
+];
+
+const messagesEl = document.getElementById('messages');
+const chipsEl = document.getElementById('chips');
+const inputEl = document.getElementById('input');
+const sendBtn = document.getElementById('send');
+
+let history = [];
+let busy = false;
+
+function addMsg(role, text, cls) {
+  const div = document.createElement('div');
+  div.className = 'msg ' + (cls || role);
+  div.textContent = text;
+  messagesEl.appendChild(div);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+  return div;
+}
+
+function renderChips() {
+  chipsEl.innerHTML = '';
+  chipQuestions.forEach(q => {
+    const b = document.createElement('button');
+    b.className = 'chip';
+    b.type = 'button';
+    b.textContent = q;
+    b.onclick = () => { if (!busy) { inputEl.value = q; ask(); } };
+    chipsEl.appendChild(b);
+  });
+}
+
+async function ask() {
+  const q = inputEl.value.trim();
+  if (!q || busy) return;
+  busy = true;
+  sendBtn.disabled = true;
+  inputEl.value = '';
+  addMsg('user', q);
+  const thinking = addMsg('bot', 'Thinking…', 'bot thinking');
+
+  try {
+    const res = await fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question: q, history: history.slice(-10) })
+    });
+    const data = await res.json();
+    thinking.textContent = data.answer || "Sorry, something went wrong — try again.";
+    thinking.classList.remove('thinking');
+    if (res.status === 429) {
+      thinking.className = 'msg error';
+    } else {
+      history.push({ role: 'user', content: q });
+      history.push({ role: 'assistant', content: data.answer });
+    }
+  } catch (e) {
+    thinking.remove();
+    addMsg('bot', "Couldn't reach the assistant right now — try again in a moment, or email purav.mehta90@gmail.com.", 'error');
+  } finally {
+    busy = false;
+    sendBtn.disabled = false;
+  }
+}
+
+sendBtn.addEventListener('click', ask);
+inputEl.addEventListener('keydown', (e) => { if (e.key === 'Enter') ask(); });
+
+renderChips();
+addMsg('bot', "Hi — I can answer questions about Purav's career background: his current role, experience across finance, audit, ICT governance and AI, and his qualifications. Try one of the suggestions below, or ask your own.");
+</script>
+</body>
+</html>
