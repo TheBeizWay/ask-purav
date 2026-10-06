@@ -34,6 +34,7 @@
   .chip{background:var(--chip-bg);border:1px solid var(--chip-line);color:var(--chip-text);border-radius:999px;
     padding:7px 13px;font-size:12.5px;cursor:pointer;font-family:inherit;text-align:left;}
   .chip:hover{filter:brightness(1.05);}
+  .chip-more{background:transparent;border-style:dashed;}
   .messages{flex:1;overflow-y:auto;padding:14px 20px;display:flex;flex-direction:column;gap:12px;}
   .msg{max-width:82%;padding:10px 14px;border-radius:14px;font-size:14px;white-space:pre-wrap;}
   .msg.user{align-self:flex-end;background:var(--bubble-user);color:var(--bubble-user-text);border-bottom-right-radius:4px;}
@@ -86,11 +87,26 @@ const ENDPOINT = "/.netlify/functions/ask-purav";
 
 const chipQuestions = [
   "What's his current role?",
-  "What's his background in AI and automation?",
+  "What has he actually built with AI and automation?",
+  "Has he led people?",
   "Why does he combine finance, audit and ICT governance?",
-  "What's his experience with Defence or government environments?",
   "What are his qualifications?",
   "What's he like outside of work?"
+];
+
+const moreQuestions = [
+  "What does he do day to day?",
+  "Is he a finance person or a technical person?",
+  "What systems and tools has he used?",
+  "Is he PRINCE2 or PMP certified?",
+  "Why did he move from audit into portfolio governance?",
+  "What's his Defence background?",
+  "What does CA with a Certificate of Public Practice mean?",
+  "What is GAICD?",
+  "Can I see examples of his work?",
+  "What kind of roles is he open to?",
+  "Where is he based?",
+  "Can I speak to his referees?"
 ];
 
 const messagesEl = document.getElementById('messages');
@@ -110,16 +126,28 @@ function addMsg(role, text, cls) {
   return div;
 }
 
+let showMore = false;
+
+function chip(q) {
+  const b = document.createElement('button');
+  b.className = 'chip';
+  b.type = 'button';
+  b.textContent = q;
+  b.onclick = () => { if (!busy) { inputEl.value = q; ask(); } };
+  return b;
+}
+
 function renderChips() {
   chipsEl.innerHTML = '';
-  chipQuestions.forEach(q => {
-    const b = document.createElement('button');
-    b.className = 'chip';
-    b.type = 'button';
-    b.textContent = q;
-    b.onclick = () => { if (!busy) { inputEl.value = q; ask(); } };
-    chipsEl.appendChild(b);
-  });
+  chipQuestions.forEach(q => chipsEl.appendChild(chip(q)));
+  if (showMore) moreQuestions.forEach(q => chipsEl.appendChild(chip(q)));
+  const t = document.createElement('button');
+  t.className = 'chip chip-more';
+  t.type = 'button';
+  t.textContent = showMore ? 'Fewer questions' : 'More questions (' + moreQuestions.length + ')';
+  t.setAttribute('aria-expanded', String(showMore));
+  t.onclick = () => { showMore = !showMore; renderChips(); };
+  chipsEl.appendChild(t);
 }
 
 async function ask() {
