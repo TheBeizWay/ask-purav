@@ -30,7 +30,8 @@
 
   .chatcard{padding:0;display:flex;flex-direction:column;min-height:420px;max-height:70vh;}
   .chat-head{padding:16px 20px;border-bottom:1px solid var(--line);font-size:12.5px;color:var(--muted);}
-  .chips{display:flex;flex-wrap:wrap;gap:8px;padding:14px 20px 4px;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;padding:14px 20px 10px;flex-shrink:0;max-height:min(220px,30vh);overflow-y:auto;border-bottom:1px solid var(--line);}
+  .messages{min-height:160px;}
   .chip{background:var(--chip-bg);border:1px solid var(--chip-line);color:var(--chip-text);border-radius:999px;
     padding:7px 13px;font-size:12.5px;cursor:pointer;font-family:inherit;text-align:left;}
   .chip:hover{filter:brightness(1.05);}
@@ -55,8 +56,8 @@
 <div class="wrap">
   <header class="card">
     <h1 class="name">PURAV MEHTA <span class="credentials">CA &middot; GAICD</span></h1>
-    <div class="tagline">ICT Portfolio Governance &middot; Investment Assurance &middot; Risk &amp; Performance</div>
-    <p class="blurb">This interactive profile provides additional context about Purav's professional experience, qualifications and governance background for recruiters, hiring managers and selection panels. It only draws on his professional history and won't share anything he keeps private (clearance status, exact compensation, or internal tool names).</p>
+    <div class="tagline">Portfolio governance &middot; Finance &middot; AI &amp; automation</div>
+    <p class="blurb">Ask about Purav's experience, qualifications and the work he's done. Answers come only from his career history. For anything else, contact him directly.</p>
     <div class="verify">
       <span>Chartered Accountant (CA)</span>
       <span>GAICD</span>
@@ -66,6 +67,7 @@
       <span>Canberra, ACT</span>
       <a href="mailto:purav.mehta90@gmail.com">purav.mehta90@gmail.com</a>
       <a href="https://www.linkedin.com/in/puravmehtaca" target="_blank" rel="noopener">linkedin.com/in/puravmehtaca</a>
+      <a href="https://thebeizway.com.au" target="_blank" rel="noopener">thebeizway.com.au</a>
     </div>
   </header>
 
@@ -157,6 +159,7 @@ async function ask() {
   sendBtn.disabled = true;
   inputEl.value = '';
   addMsg('user', q);
+  if (showMore) { showMore = false; renderChips(); }
   const thinking = addMsg('bot', 'Thinking…', 'bot thinking');
 
   try {
@@ -187,7 +190,7 @@ sendBtn.addEventListener('click', ask);
 inputEl.addEventListener('keydown', (e) => { if (e.key === 'Enter') ask(); });
 
 renderChips();
-addMsg('bot', "Hi — I can answer questions about Purav's career background: his current role, experience across finance, audit, ICT governance and AI, and his qualifications. Try one of the suggestions below, or ask your own.");
+addMsg('bot', "Hi — I can answer questions about Purav's career background: his current role, experience across finance, audit, ICT governance and AI, and his qualifications. Pick a question above, or ask your own.");
 </script>
 </body>
 </html>
