@@ -17,6 +17,10 @@ A career Q&A assistant for recruiters and hiring managers — interview an AI ab
 - Refers to employers generically; understated, factual tone — states what I've done, not how impressive it is.
 - On-page disclaimer: answers are generated — verify anything important directly.
 
+## Testing
+
+The guardrails are tested against a fixed set of rule-breaking prompts, run against the live endpoint and graded against expected behaviour written beforehand. Latest run: 9 pass, 1 partial, 0 fail. Method, results and limits are in [EVALUATION.md](EVALUATION.md).
+
 ## Try it
 
 - "What's his current role?"
